@@ -25,7 +25,7 @@ const Footer = () => {
                         {/* Brand_Logo */}
                         <img
                             className='max-h-8 md:max-h-9'
-                            src="/logo.png"
+                            src="/logo1.png"
                             alt="Realhome." />
 
                         {/* Description */}

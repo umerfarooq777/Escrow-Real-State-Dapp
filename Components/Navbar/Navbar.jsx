@@ -19,7 +19,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 const drawerWidth = 240;
 const navItems = [
-    { id: 0, name: 'Home', href: '/' },
+    { id: 0, name: 'Home 2', href: '/' },
     { id: 1, name: 'Properties', href: '/properties' },
     { id: 2, name: 'Services', href: '/services' },
     { id: 3, name: 'About Us', href: '/about-us' }
@@ -44,7 +44,7 @@ const Navbar = (props) => {
             {/* Brand Icon */}
             <Box sx={{ my: 3 }}>
                 <img className='max-h-7 mx-auto'
-                    src="/logo.png"
+                    src="/logo1.png"
                     alt="Realhome." />
             </Box>
             <Divider />
@@ -92,7 +92,7 @@ const Navbar = (props) => {
                             <Link href={'/'}>
                                 <img
                                     className='max-h-8'
-                                    src="/logo.png"
+                                    src="/logo1.png"
                                     alt="Realhome." />
                             </Link>
                         </Box>

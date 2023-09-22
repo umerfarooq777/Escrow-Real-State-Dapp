@@ -4,13 +4,33 @@ import { Button, Container, useMediaQuery } from "@mui/material";
 import React from "react";
 import PropertyCard from "./PropertyCard/PropertyCard";
 import AddIcon from '@mui/icons-material/Add';
+import CreatePropertyModal from "../Modals/createPropertyModal";
 
 
 const Properties = () => {
   const isXsScreen = useMediaQuery("(max-width:640px)");
 
+  //========================================MODAL
+
+  const [open, setOpen] = React.useState(false);
+  const [scroll, setScroll] = React.useState('paper');
+
+  const handleClickOpen = (scrollType) => () => {
+    setOpen(true);
+    setScroll(scrollType);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // <Button onClick={handleClickOpen('paper')}>scroll=paper</Button>
+  //           <Button onClick={handleClickOpen('body')}>scroll=body</Button>
+
+  //========================================
   return (
     <Container>
+      <CreatePropertyModal open={open} scroll={scroll} handleClickOpen={handleClickOpen} handleClose={handleClose} />
       <div className="lg:space-y-7 space-y-5">
         {/* title */}
         <div className="flex justify-between items-center">
@@ -19,7 +39,7 @@ const Properties = () => {
             Property for You
           </h1>
           <Button
-            // onClick={() => router.push('/join-us')}
+            onClick={handleClickOpen('paper')}
             variant="outlined"
             color="primary"
             size={isXsScreen ? "small" : "medium"}
