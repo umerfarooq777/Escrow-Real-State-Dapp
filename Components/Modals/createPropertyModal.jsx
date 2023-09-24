@@ -16,7 +16,7 @@ import axios from "axios";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -65,7 +65,7 @@ export default function CreatePropertyModal({
     // Step 1: Upload the image to IPFS
     let imageCID;
     try {
-        console.log(imageFile);
+      console.log(imageFile);
       const imageBuffer = await imageFile.arrayBuffer();
       const imageResult = await ipfs.add(imageBuffer);
       console.log(imageResult);
@@ -174,47 +174,68 @@ export default function CreatePropertyModal({
                 ref={descriptionElementRef}
                 tabIndex={-1}
               >
-                <form onSubmit={handleSubmit}>
-                  <FormControl>
-                    <InputLabel htmlFor="component-outlined">Name</InputLabel>
-                    <OutlinedInput
-                      id="component-outlined"
-                    //   defaultValue="Composed TextField"
-                      label="Name"
-                      type="text"
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col w-full"
+                >
+                  <Box className="mb-3">
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="component-outlined">Name</InputLabel>
+                      <OutlinedInput
+                        id="component-outlined"
+                        //   defaultValue="Composed TextField"
+                        label="Name"
+                        type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <InputLabel htmlFor="component-outlined">
-                      Description
-                    </InputLabel>
-                    <OutlinedInput
-                      id="component-outlined"
-                    //   defaultValue="Composed TextField"
-                      label="Description"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      required
-                    />
-                  </FormControl>
-                  <Button
-                    component="label"
-                    variant="contained"
-                    startIcon={<CloudUploadIcon />}
-                    
-                  >
-                    Upload file
-                    <VisuallyHiddenInput type="file"
+                        fullWidth
+                      />
+                    </FormControl>
+                  </Box>
+                  <Box className="mb-4">
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="component-outlined1">
+                        Description
+                      </InputLabel>
+                      <OutlinedInput
+                        id="component-outlined1"
+                        //   defaultValue="Composed TextField"
+                        label="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                      />
+                    </FormControl>
+                  </Box>
+                  <Box className="mb-4 flex justify-center">
+                    <Button
+                      component="label"
+                      variant="contained"
+                      startIcon={<CloudUploadIcon />}
+                      className="w-9/12 mx-auto"
+                      
+                    >
+                      Upload file
+                      <VisuallyHiddenInput
+                        type="file"
                         onChange={(e) => setImageFile(e.target.files[0])}
-                        required/>
+                        required
+                      />
+                    </Button>
+                  </Box>
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="mb-4"
+                    fullWidth
+                  >
+                    Submit
                   </Button>
-                  <Button type="submit">Submit</Button>
                 </form>
 
-                <div>
+                {/* <div>
                   <h1>Create NFT</h1>
                   <form onSubmit={handleSubmit}>
                     <div>
@@ -250,7 +271,7 @@ export default function CreatePropertyModal({
                       <p>{nftURI}</p>
                     </div>
                   )}
-                </div>
+                </div> */}
               </Box>
             </Box>
             <Box width={"40%"} className="flex justify-end items-center">
