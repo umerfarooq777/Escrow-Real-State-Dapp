@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+import ipfs from 'ipfs-http-client'; // Import IPFS HTTP client library
+
+const ipfsClient = ipfs({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }); // Initialize IPFS client
+
+function NFTCreator() {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    imageFile: null,
+  });
+
+  const [nftUri, setNftUri] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: name === 'imageFile' ? files[0] : value,
+    });
+  };
+
+  const uploadToIpfs = async () => {
+    const imageFile = formData.imageFile;
+    if (!imageFile) return;
+
+    const imageBuffer = await imageFile.arrayBuffer();
+    const imageResult = await ipfsClient.add(imageBuffer);
+    const imageCid = imageResult.path;
+
+    // Construct NFT JSON data
+    const nftData = {
+      name: formData.title,
+      description: formData.description,
+      image: `ipfs://${imageCid}`, // Use IPFS CID in the URI
+    };
+
+    setNftUri(JSON.stringify(nftData));
+    setImageUrl(URL.createObjectURL(imageFile)); // Visualize image before upload
+  };
+
+  return (
+    <div>
+      <h1>Create NFT</h1>
+      <form>
+        <label>
+          Title:
+          <input type="text" name="title" onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          Description:
+          <textarea name="description" onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          Image:
+          <input type="file" name="imageFile" accept=".jpg, .jpeg, .png" onChange={handleChange} />
+        </label>
+        <br />
+        <button type="button" onClick={uploadToIpfs}>Upload to IPFS</button>
+      </form>
+
+      {imageUrl && <img src={imageUrl} alt="Preview" />}
+      
+      {nftUri && (
+        <div>
+          <h2>NFT URI JSON Data:</h2>
+          <pre>{nftUri}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default NFTCreator;

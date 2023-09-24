@@ -4,6 +4,7 @@ import { Lexend } from 'next/font/google'
 import Navbar from '@/Components/Navbar/Navbar'
 import Footer from '@/Components/Footer/Footer'
 import NextAuthProvider from '@/Components/NextAuthProvider/NextAuthProvider'
+import { NFTProvider } from '@/context/NFTcontext'
 const lexend = Lexend({ subsets: ['latin'] })
 
 export default function RootLayout({ children }) {
@@ -11,11 +12,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <MUIProvider>
         <NextAuthProvider>
+          <NFTProvider>
+
           <body className={lexend.className}>
               <Navbar />
               {children}
               <Footer />
           </body>
+          </NFTProvider>
         </NextAuthProvider>
       </MUIProvider>
     </html >
