@@ -1,10 +1,11 @@
 "use client";
 import { apartmentsData, housesData } from "@/store/propertiesData";
 import { Button, Container, useMediaQuery } from "@mui/material";
-import React ,{useState}from "react";
+import React, { useState } from "react";
 import PropertyCard from "./PropertyCard/PropertyCard";
 import AddIcon from '@mui/icons-material/Add';
 import CreatePropertyModal from "../Modals/createPropertyModal";
+import CreatePropertyModal2 from "../Modals/createPropertyModal2";
 
 
 const Properties = () => {
@@ -30,7 +31,8 @@ const Properties = () => {
   //========================================
   return (
     <Container>
-      <CreatePropertyModal open={open} scroll={scroll} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+      <CreatePropertyModal2 />
+      {/* <CreatePropertyModal open={open} scroll={scroll} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
       <div className="lg:space-y-7 space-y-5" >
         {/* title */}
         <div className="flex justify-between items-center">
