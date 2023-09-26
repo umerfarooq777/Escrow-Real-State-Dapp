@@ -1,97 +1,67 @@
-import React, { Component } from "react";
-import ReactDom from "react-dom";
-import MapGL from "react-map-gl";
-import {
-  Editor,
-  EditingMode,
-  DrawLineStringMode,
-  DrawPolygonMode
-} from "react-map-gl-draw";
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, FeatureGroup, Polygon, useMap } from 'react-leaflet';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import { EditControl } from 'react-leaflet-draw';
 
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pwY3owbGFxMDVwNTNxcXdwMms2OWtzbiJ9.1PPVl0VLUQgqrosrI2nUhg";
+function EditablePolygonMap() {
+  const [latlngs, setLatlngs] = useState([]);
+  const [editable, setEditable] = useState(true);
 
-const MODES = [
-  { id: "drawPolyline", text: "Draw Polyline", handler: DrawLineStringMode },
-  { id: "drawPolygon", text: "Draw Polygon", handler: DrawPolygonMode },
-  { id: "editing", text: "Edit Feature", handler: EditingMode }
-];
-
-const DEFAULT_VIEWPORT = {
-  width: 800,
-  height: 600,
-  longitude: -122.45,
-  latitude: 37.78,
-  zoom: 14
-};
-
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewport: DEFAULT_VIEWPORT,
-      modeId: null,
-      modeHandler: null
-    };
-  }
-
-  _switchMode = evt => {
-    const modeId =
-      evt.target.value === this.state.modeId ? null : evt.target.value;
-    const mode = MODES.find(m => m.id === modeId);
-    const modeHandler = mode ? new mode.handler() : null;
-    this.setState({ modeId, modeHandler });
+  const handleEdit = (e) => {
+    // const layer = e.layers.toGeoJSON();
+    console.log("EData",e);
+    const layer = e.layer;
+    const newLatlngs = layer._latlngs[0];
+    console.log("EData",newLatlngs);
+    setLatlngs(newLatlngs);
+  };
+  const handleEditVertex = (e) => {
+    console.log("EData",e);
+    const poly = e.poly;
+    const newLatlngs = poly._latlngs[0];
+    console.log("EData",newLatlngs);
+    setLatlngs(newLatlngs);
   };
 
-  _renderToolbar = () => {
-    return (
-      <div
-        style={{ position: "absolute", top: 0, right: 0, maxWidth: "320px" }}
-      >
-        <select onChange={this._switchMode}>
-          <option value="">--Please choose a draw mode--</option>
-          {MODES.map(mode => (
-            <option key={mode.id} value={mode.id}>
-              {mode.text}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  };
-
-  _updateViewport = viewport => {
-    this.setState({ viewport });
-  };
-
-  render() {
-    const { viewport, modeHandler } = this.state;
-    return (<>
-      <h2>hello</h2>
-      <MapGL
-        {...viewport}
-        width="100%"
-        height="100%"
-        mapboxApiAccessToken={MAPBOX_TOKEN}
-        mapStyle={"mapbox://styles/mapbox/light-v9"}
-        onViewportChange={this._updateViewport}
-      >
-        <Editor
-          // to make the lines/vertices easier to interact with
-          clickRadius={12}
-          mode={modeHandler}
-          onSelect={_ => { }}
+  const EditableControl = () => {
+    const map = useMap();
+    if (editable) {
+      return (
+        <EditControl
+          position="topright"
+          draw={{
+            rectangle: false,
+            circle: false,
+            marker: false,
+            polyline: false,
+          }}
+          onEditVertex={handleEditVertex}
+          onCreated={handleEdit}
+          onEdited={handleEdit}
         />
-        {this._renderToolbar()}
-      </MapGL>
-    </>
-    );
-  }
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div>
+      <button onClick={() => setEditable(!editable)}>
+        {editable ? 'Disable Editing' : 'Enable Editing'}
+      </button>
+      <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '400px', width: '100%' }}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <FeatureGroup>
+          <EditableControl />
+          <Polygon positions={latlngs} />
+        </FeatureGroup>
+      </MapContainer>
+      <div>
+        <h3>Coordinates:</h3>
+        <pre>{JSON.stringify(latlngs, null, 2)}</pre>
+      </div>
+    </div>
+  );
 }
 
-
-// const body = document.body;
-// body.style = "width: 100vw; height: 100vh; margin: 0;";
-// const container = document.getElementById("root");
-// container.style = "width: 100%; height: 100%";
-// ReactDom.render(<App />, container);
+export default EditablePolygonMap;

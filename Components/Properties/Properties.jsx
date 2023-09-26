@@ -6,6 +6,7 @@ import PropertyCard from "./PropertyCard/PropertyCard";
 import AddIcon from '@mui/icons-material/Add';
 import CreatePropertyModal from "../Modals/createPropertyModal";
 import CreatePropertyModal2 from "../Modals/createPropertyModal2";
+import CreatePropertyModal3 from "../Modals/createPropertyModal3";
 
 
 const Properties = () => {
@@ -32,6 +33,7 @@ const Properties = () => {
   return (
     <Container>
       <CreatePropertyModal2 />
+      {/* <CreatePropertyModal3 /> */}
       {/* <CreatePropertyModal open={open} scroll={scroll} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
       <div className="lg:space-y-7 space-y-5" >
         {/* title */}
