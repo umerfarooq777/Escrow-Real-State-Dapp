@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, FeatureGroup, Polygon, useMap } from 'react-leaflet';
+import L from 'react-leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import { EditControl } from 'react-leaflet-draw';
 
@@ -9,17 +10,25 @@ function EditablePolygonMap() {
 
   const handleEdit = (e) => {
     // const layer = e.layers.toGeoJSON();
-    console.log("EData",e);
+    console.log("EData", e);
     const layer = e.layer;
     const newLatlngs = layer._latlngs[0];
-    console.log("EData",newLatlngs);
+    console.log("EData", newLatlngs);
     setLatlngs(newLatlngs);
   };
+  const handleEdited = (e) => {
+    // const layer = e.layers.toGeoJSON();
+    console.log("EData", e);
+    // const layer = e.layer;
+    // const newLatlngs = layer._latlngs[0];
+    // console.log("EData", newLatlngs);
+    // setLatlngs(newLatlngs);
+  };
   const handleEditVertex = (e) => {
-    console.log("EData",e);
+    console.log("EData", e);
     const poly = e.poly;
     const newLatlngs = poly._latlngs[0];
-    console.log("EData",newLatlngs);
+    console.log("EData", newLatlngs);
     setLatlngs(newLatlngs);
   };
 
@@ -37,7 +46,7 @@ function EditablePolygonMap() {
           }}
           onEditVertex={handleEditVertex}
           onCreated={handleEdit}
-          onEdited={handleEdit}
+          onEdited={handleEdited}
         />
       );
     }
@@ -53,6 +62,13 @@ function EditablePolygonMap() {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <FeatureGroup>
           <EditableControl />
+          <Polygon positions={latlngs} />
+        </FeatureGroup>
+      </MapContainer>
+      <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '400px', width: '100%' }}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <FeatureGroup>
+
           <Polygon positions={latlngs} />
         </FeatureGroup>
       </MapContainer>
