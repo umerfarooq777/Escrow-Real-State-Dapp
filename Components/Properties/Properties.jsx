@@ -34,7 +34,7 @@ const Properties = () => {
     <Container>
       <CreatePropertyModal2 />
       {/* <CreatePropertyModal3 /> */}
-      {/* <CreatePropertyModal open={open} scroll={scroll} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
+      <CreatePropertyModal open={open} scroll={scroll} handleClickOpen={handleClickOpen} handleClose={handleClose} />
       <div className="lg:space-y-7 space-y-5" >
         {/* title */}
         <div className="flex justify-between items-center">
